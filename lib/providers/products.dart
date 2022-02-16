@@ -66,6 +66,7 @@ class Products with ChangeNotifier {
           description: prodData['description'],
           price: prodData['price'],
           imageUrl: prodData['imageUrl'],
+          isFavourite: prodData['isFavourite'],
         ),
       );
     });
@@ -82,7 +83,8 @@ class Products with ChangeNotifier {
             'title': newProd.title,
             'description': newProd.description,
             'price': newProd.price,
-            'imageUrl': newProd.imageUrl
+            'imageUrl': newProd.imageUrl,
+            'isFavourite': false,
           },
         ),
       );
@@ -114,6 +116,7 @@ class Products with ChangeNotifier {
           'description': newProd.description,
           'price': newProd.price,
           'imageUrl': newProd.imageUrl,
+          'isFavourite': newProd.isFavourite,
         },
       ),
     );

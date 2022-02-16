@@ -12,7 +12,6 @@ class CartScreen extends StatelessWidget {
     final cartItems = cartData.items;
     final total = cartData.totalAmount;
     final orderData = Provider.of<Orders>(context, listen: false);
-    // print(cartData.items);
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Cart'),
