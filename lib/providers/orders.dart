@@ -65,6 +65,7 @@ class Orders with ChangeNotifier {
     try {
       final response = await http.get(url);
       var _extractedData = json.decode(response.body);
+      if (_extractedData == null) return;
       print(_extractedData);
       _extractedData.forEach((orderId, orderData) {
         _loadedOrders.add(OrderItem(
