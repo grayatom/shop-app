@@ -9,6 +9,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartData = Provider.of<Cart>(context);
     final product = Provider.of<Product>(context, listen: false);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
     return GridTile(
       child: GestureDetector(
         onTap: () {
@@ -30,8 +31,21 @@ class ProductItem extends StatelessWidget {
             icon: product.isFavourite
                 ? Icon(Icons.favorite)
                 : Icon(Icons.favorite_border),
-            onPressed: () {
-              product.toggleFavouriteStatus(product.id);
+            onPressed: () async {
+              try {
+                await product.toggleFavouriteStatus(product.id);
+              } catch (e) {
+                scaffoldMessenger.hideCurrentSnackBar();
+                scaffoldMessenger.showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      '${e.toString()}',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             },
           ),
         ),

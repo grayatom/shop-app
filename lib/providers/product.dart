@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import '../models/http_exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -21,14 +22,19 @@ class Product with ChangeNotifier {
 
   Future<void> toggleFavouriteStatus(String prodId) async {
     final url =
-        'https://shop-app-1902f-default-rtdb.asia-southeast1.firebasedatabase.app/products/$prodId.json';
+        'https://shop-app-1902f-default-rtdb.asia-southeast1.firebasedatabase.app/products/$prodId.json ';
     isFavourite = !isFavourite;
     notifyListeners();
-    await http.patch(
+    final response = await http.patch(
       url,
       body: json.encode(
         {'isFavourite': isFavourite},
       ),
     );
+    if (response.statusCode >= 400) {
+      isFavourite = !isFavourite;
+      notifyListeners();
+      throw HttpException('Some error occurred.');
+    }
   }
 }

@@ -17,7 +17,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   void didChangeDependencies() {
     if (!_init) {
-      Provider.of<Orders>(context).loadOrders().then((_) {
+      Provider.of<Orders>(context, listen: false).loadOrders().then((_) {
         setState(() {
           _isLoading = false;
         });
