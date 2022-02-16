@@ -4,8 +4,15 @@ import '../providers/cart.dart';
 import '../widgets/cart_item.dart' as ci;
 import '../providers/orders.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  var _isLoading = false;
   @override
   Widget build(BuildContext context) {
     final cartData = Provider.of<Cart>(context);
@@ -45,20 +52,29 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                   Spacer(),
-                  TextButton(
-                    onPressed: () {
-                      var items = cartItems.values.toList();
-                      if (items.isNotEmpty) {
-                        orderData.addOrder(total, items);
-                        cartData.clearCart();
-                      }
-                      // print(orderProvider.items);
-                    },
-                    child: Text(
-                      'Order now',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
+                  _isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : TextButton(
+                          onPressed: () {
+                            var items = cartItems.values.toList();
+                            if (items.isNotEmpty) {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              orderData.addOrder(total, items).then((_) {
+                                setState(() {
+                                  _isLoading = false;
+                                });
+                              });
+                              cartData.clearCart();
+                            }
+                            // print(orderProvider.items);
+                          },
+                          child: Text(
+                            'Order now',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
                 ],
               ),
             ),
