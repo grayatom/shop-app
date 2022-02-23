@@ -3,12 +3,14 @@ import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart.dart';
+import '../providers/auth.dart';
 
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartData = Provider.of<Cart>(context);
     final product = Provider.of<Product>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     return GridTile(
       child: GestureDetector(
@@ -33,7 +35,8 @@ class ProductItem extends StatelessWidget {
                 : Icon(Icons.favorite_border),
             onPressed: () async {
               try {
-                await product.toggleFavouriteStatus(product.id);
+                await product.toggleFavouriteStatus(
+                    product.id, authData.token, authData.userId);
               } catch (e) {
                 scaffoldMessenger.hideCurrentSnackBar();
                 scaffoldMessenger.showSnackBar(
